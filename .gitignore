@@ -23,6 +23,7 @@ project/plugins/project/
 # IntelliJ project files
 .idea
 *.iml
+.vscode
 out
 gen
 ### Python template
