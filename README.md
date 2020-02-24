@@ -1,4 +1,9 @@
-# Spark Course
+# CodeCourse
+It is the learning material I gathered along the time on the coding skill
+## LeetCode
+LeetCode solution
+
+## Spark
 This is from udemy's taming big data with apache spark 
 and python course
 
