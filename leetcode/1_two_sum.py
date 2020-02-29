@@ -15,4 +15,3 @@ class Solution:
             if hashdict.get(complement) is not None:
                 return [hashdict.get(complement), i]
             hashdict.update({nums[i]: i})
-

@@ -1,9 +1,9 @@
-#from pyspark import SparkConf, SparkContext
+# from pyspark import SparkConf, SparkContext
 import collections
 from pyspark.sql import SparkSession
 
-#conf = SparkConf().setMaster("local").setAppName("RatingsHistogram")
-#sc = SparkContext(conf = conf)
+# conf = SparkConf().setMaster("local").setAppName("RatingsHistogram")
+# sc = SparkContext(conf = conf)
 spark = SparkSession.builder.master("local").appName("RatingHistogram").getOrCreate()
 sc = spark.sparkContext
 

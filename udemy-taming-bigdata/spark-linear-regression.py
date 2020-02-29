@@ -8,11 +8,17 @@ from pyspark.ml.linalg import Vectors
 if __name__ == "__main__":
 
     # Create a SparkSession (Note, the config section is only for Windows!)
-    spark = SparkSession.builder.config("spark.sql.warehouse.dir", "file:///C:/temp").appName("LinearRegression").getOrCreate()
+    spark = (
+        SparkSession.builder.config("spark.sql.warehouse.dir", "file:///C:/temp")
+        .appName("LinearRegression")
+        .getOrCreate()
+    )
 
     # Load up our data and convert it to the format MLLib expects.
     inputLines = spark.sparkContext.textFile("regression.txt")
-    data = inputLines.map(lambda x: x.split(",")).map(lambda x: (float(x[0]), Vectors.dense(float(x[1]))))
+    data = inputLines.map(lambda x: x.split(",")).map(
+        lambda x: (float(x[0]), Vectors.dense(float(x[1])))
+    )
 
     # Convert this RDD to a DataFrame
     colNames = ["label", "features"]
@@ -47,8 +53,7 @@ if __name__ == "__main__":
 
     # Print out the predicted and actual values for each point
     for prediction in predictionAndLabel:
-      print(prediction)
-
+        print(prediction)
 
     # Stop the session
     spark.stop()

@@ -10,6 +10,7 @@ Explanation: [4,-1,2,1] has the largest sum = 6.
 
 """
 
+
 class Solution:
     def maxSubArray(self, nums) -> int:
         max_len: int = len(nums)

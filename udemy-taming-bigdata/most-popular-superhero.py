@@ -7,7 +7,7 @@ def countCoOccurences(line):
 
 
 def parseNames(line):
-    fields = line.split('\"')
+    fields = line.split('"')
     return (int(fields[0]), fields[1].encode("utf8"))
 
 
@@ -20,16 +20,20 @@ def main():
     lines = sc.textFile("file:///home/williamzy11/codebase/SparkCourse/Marvel-Graph.txt")
 
     pairings = lines.map(countCoOccurences)
-    totalFriendsByCharacter = pairings.reduceByKey(lambda x, y : x + y)
-    flipped = totalFriendsByCharacter.map(lambda xy : (xy[1], xy[0]))
+    totalFriendsByCharacter = pairings.reduceByKey(lambda x, y: x + y)
+    flipped = totalFriendsByCharacter.map(lambda xy: (xy[1], xy[0]))
 
     mostPopular = flipped.max()
 
     mostPopularName = namesRdd.lookup(mostPopular[1])[0]
 
-    print(str(mostPopularName) + " is the most popular superhero, with " + \
-        str(mostPopular[0]) + " co-appearances.")
+    print(
+        str(mostPopularName)
+        + " is the most popular superhero, with "
+        + str(mostPopular[0])
+        + " co-appearances."
+    )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

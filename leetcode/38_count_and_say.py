@@ -22,7 +22,7 @@ class Solution:
     def _countAndSay(self, n: int, prev: str) -> str:
         if n == 1:
             return "1"
-        prev = self._countAndSay(n-1, prev)
+        prev = self._countAndSay(n - 1, prev)
         rest = ""
         temp = prev[0]
         frequency = 0
@@ -31,7 +31,7 @@ class Solution:
             if prev[i] == temp:
                 frequency += 1
             else:
-                rest = rest + str(frequency) + prev[i-1]
+                rest = rest + str(frequency) + prev[i - 1]
                 frequency = 1
                 temp = prev[i]
             if i == len(prev) - 1:
