@@ -1040,25 +1040,41 @@ df['dist'] = nearest_distance
 61. How to know the maximum possible correlation value of each column against other columns?
 Difficulty Level: L2
 
-Compute maximum possible absolute correlation value of each column against other columns in df.
+Compute maximum possible absolute correlation value 
+of each column against other columns in df.
 
 Input
 
 df = pd.DataFrame(np.random.randint(1,100, 80).reshape(8, -1), columns=list('pqrstuvwxy'), index=list('abcdefgh'))
+
+"""
+df = pd.DataFrame(np.random.randint(1,100, 80).reshape(8, -1), columns=list('pqrstuvwxy'), index=list('abcdefgh'))
+# print(df.corr().apply(lambda x: np.abs(x)).apply(lambda x: sorted(x)[-2], axis=1))
+
+
+"""
 62. How to create a column containing the minimum by maximum of each row?
 Difficulty Level: L2
 
 Compute the minimum-by-maximum for every row of df.
-
+"""
 df = pd.DataFrame(np.random.randint(1,100, 80).reshape(8, -1))
+#print(df.apply(lambda x: np.min(x)/np.max(x), axis=1))
+
+
+"""
 63. How to create a column that contains the penultimate value in each row?
 Difficulty Level: L2
 
 Create a new column 'penultimate' which has the second largest value of each row of df.
 
 Input
-
+"""
 df = pd.DataFrame(np.random.randint(1,100, 80).reshape(8, -1))
+df["penultimate"] = df.apply(lambda x: sorted(x)[-2], axis=1)
+# print(df)
+
+"""
 64. How to normalize all columns in a dataframe?
 Difficulty Level: L2
 
@@ -1067,16 +1083,24 @@ Range all columns of df such that the minimum value in each column is 0 and max 
 Don’t use external packages like sklearn.
 
 Input
-
+"""
 df = pd.DataFrame(np.random.randint(1,100, 80).reshape(8, -1))
+mean = df.describe().loc["mean", :]
+std = df.describe().loc["std", :]
+# print((df - mean)/std)
+
+"""
 65. How to compute the correlation of each row with the suceeding row?
 Difficulty Level: L2
 
 Compute the correlation of each row of df with its succeeding row.
 
 Input
-
+"""
 df = pd.DataFrame(np.random.randint(1,100, 80).reshape(8, -1))
+# print([df.iloc[i].corr(df.iloc[i+1]) for i in range(len(df) - 1)])
+
+"""
 66. How to replace both the diagonals of dataframe with 0?
 Difficulty Level: L2
 
@@ -1110,10 +1134,18 @@ Desired output
 # 7  65  22   0  75  17  10  43   0  12  77
 # 8  47   0  96  55  17  83  61  85   0  86
 # 9   0  80  28  45  77  12  67  80   7   0
+"""
+df = pd.DataFrame(np.random.randint(1,100, 100).reshape(10, -1))
+for i in  range(len(df) - 1):
+    df.iloc[i, i] = 0
+# print(df)
+
+"""
 67. How to get the particular group of a groupby dataframe by key?
 Difficulty Level: L2
 
-This is a question related to understanding of grouped dataframe. From df_grouped, get the group belonging to 'apple' as a dataframe.
+This is a question related to understanding of grouped dataframe. 
+From df_grouped, get the group belonging to 'apple' as a dataframe.
 
 Input
 
@@ -1122,52 +1154,50 @@ df = pd.DataFrame({'col1': ['apple', 'banana', 'orange'] * 3,
                    'col3': np.random.randint(0, 15, 9)})
 
 df_grouped = df.groupby(['col1'])
-# Input
+"""
 df = pd.DataFrame({'col1': ['apple', 'banana', 'orange'] * 3,
                    'col2': np.random.rand(9),
                    'col3': np.random.randint(0, 15, 9)})
 
 df_grouped = df.groupby(['col1'])
+# print(df_grouped.get_group("apple"))
 
-# Solution 1
-df_grouped.get_group('apple')
-
-# Solution 2
-for i, dff in df_grouped:
-    if i == 'apple':
-        print(dff)
-    col1      col2  col3
-0  apple  0.673434     7
-3  apple  0.182348    14
-6  apple  0.050457     3
-[/expand]68. How to get the n’th largest value of a column when grouped by another column?
+"""
+68. How to get the n’th largest value of a column when grouped by another column?
 Difficulty Level: L2
 
 In df, find the second largest value of 'taste' for 'banana'
 
 Input
-
+"""
 df = pd.DataFrame({'fruit': ['apple', 'banana', 'orange'] * 3,
-                   'rating': np.random.rand(9),
+                   'taste': np.random.rand(9),
                    'price': np.random.randint(0, 15, 9)})
-               
+# print(df.groupby("fruit").agg({lambda x: sorted(x)[-2]}))
+
+
+"""    
 69. How to compute grouped mean on pandas dataframe and keep the grouped column as another column (not index)?
 Difficulty Level: L1
 
 In df, Compute the mean price of every fruit, while keeping the fruit as another column instead of an index.
 
 Input
-
+"""
 df = pd.DataFrame({'fruit': ['apple', 'banana', 'orange'] * 3,
                    'rating': np.random.rand(9),
                    'price': np.random.randint(0, 15, 9)})
-               
+# print(df.groupby("fruit").mean().reset_index())
+
+
+"""            
 70. How to join two dataframes by 2 columns so they have only the common rows?
 Difficulty Level: L2
 
 Join dataframes df1 and df2 by ‘fruit-pazham’ and ‘weight-kilo’.
 
 Input
+"""
 
 df1 = pd.DataFrame({'fruit': ['apple', 'banana', 'orange'] * 3,
                     'weight': ['high', 'medium', 'low'] * 3,
@@ -1176,13 +1206,21 @@ df1 = pd.DataFrame({'fruit': ['apple', 'banana', 'orange'] * 3,
 df2 = pd.DataFrame({'pazham': ['apple', 'orange', 'pine'] * 2,
                     'kilo': ['high', 'low'] * 3,
                     'price': np.random.randint(0, 15, 6)})
+df_join = pd.merge(df1, df2, how='inner', left_on=['fruit', 'weight'], right_on=['pazham', 'kilo'], suffixes=['_left', '_right'])
+# print(df_join)
+
+"""
 72. How to get the positions where values of two columns match?
 Difficulty Level: L2
+"""
+np.where(df_join.fruit == df_join.pazham)
 
+"""
 73. How to create lags and leads of a column in a dataframe?
 Difficulty Level: L2
 
-Create two new columns in df, one of which is a lag1 (shift column a down by 1 row) of column ‘a’ and the other is a lead1 (shift column b up by 1 row).
+Create two new columns in df, one of which is a lag1 (shift column a down by 1 row) of column ‘a’ and 
+the other is a lead1 (shift column b up by 1 row).
 
 Input
 
@@ -1202,14 +1240,29 @@ Desired Output
 2  75  73  51  28    20.0      1.0
 3   1   1   9  83    75.0     47.0
 4  30  47  67   4     1.0      NaN
+"""
+# Input
+df = pd.DataFrame(np.random.randint(1, 100, 20).reshape(-1, 4), columns = list('abcd'))
+
+# Solution
+df['a_lag1'] = df['a'].shift(1)
+df['b_lead1'] = df['b'].shift(-1)
+# print(df)
+
+
+"""
 74. How to get the frequency of unique values in the entire dataframe?
 Difficulty Level: L2
 
 Get the frequency of unique values in the entire dataframe df.
 
 Input
-
+"""
 df = pd.DataFrame(np.random.randint(1, 10, 20).reshape(-1, 4), columns = list('abcd'))
+
+# print(pd.value_counts(df.values.ravel()))
+
+"""
 75. How to split a text column into two separate columns?
 Difficulty Level: L2
 
@@ -1238,3 +1291,10 @@ Desired Output
 3  40   Hyderabad    Telengana
 4  80   Bangalore    Karnataka
 """
+df = pd.DataFrame(["STD, City    State",
+"33, Kolkata    West Bengal",
+"44, Chennai    Tamil Nadu",
+"40, Hyderabad    Telengana",
+"80, Bangalore    Karnataka"], columns=['row'])
+
+print(df["row"].str.split("\s+|,", expand=True))
