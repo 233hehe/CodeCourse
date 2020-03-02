@@ -814,7 +814,7 @@ Input
 
 df = pd.read_csv('https://raw.githubusercontent.com/selva86/datasets/master/Cars93_miss.csv')
 """
-#print(cars93.iloc[::20, :][['Manufacturer', 'Model', 'Type']])
+# print(cars93.iloc[::20, :][['Manufacturer', 'Model', 'Type']])
 
 
 """
@@ -852,8 +852,8 @@ Input
 
 df = pd.DataFrame(np.random.randint(1, 30, 30).reshape(10,-1), columns=list('abc'))
 """
-df_51 = pd.DataFrame(np.random.randint(1, 30, 30).reshape(10,-1), columns=list('abc'))
-#print(df_51["a"].argsort()[::-1][5])
+df_51 = pd.DataFrame(np.random.randint(1, 30, 30).reshape(10, -1), columns=list("abc"))
+# print(df_51["a"].argsort()[::-1][5])
 
 """
 52. How to find the position of the nth largest value greater than a given value?
@@ -889,6 +889,8 @@ Input
 """
 ser_54 = pd.Series(np.logspace(-2, 2, 30))
 qunatile_54 = np.quantile(ser_54, [0.05, 0.95])
+
+
 def replace_value(x):
     if x < qunatile_54[0]:
         return qunatile_54[0]
@@ -896,8 +898,10 @@ def replace_value(x):
         return qunatile_54[1]
     else:
         return x
+
+
 np_replace_value = np.vectorize(replace_value)
-#print(np_replace_value(ser_54))
+# print(np_replace_value(ser_54))
 
 
 """
@@ -925,10 +929,13 @@ Input
 df = pd.DataFrame(np.arange(25).reshape(5, -1))
 """
 df = pd.DataFrame(np.arange(25).reshape(5, -1))
+
+
 def swap_rows(df, i1, i2):
     a, b = df.iloc[i1, :].copy(), df.iloc[i2, :].copy()
     df.iloc[i1, :], df.iloc[i2, :] = b, a
     return df
+
 
 # print(swap_rows(df, 1, 2))
 
@@ -969,7 +976,7 @@ Output
 3  0  0   0   1   0  16  17  18  19
 4  0  0   0   0   1  21  22  23  24
 """
-df = pd.DataFrame(np.arange(25).reshape(5,-1), columns=list('abcde'))
+df = pd.DataFrame(np.arange(25).reshape(5, -1), columns=list("abcde"))
 # print(pd.get_dummies(df, columns=["a"]))
 
 """
@@ -980,7 +987,7 @@ Obtain the column name with the highest number of row-wise maximum’s in df.
 
 df = pd.DataFrame(np.random.randint(1,100, 40).reshape(10, -1))
 """
-df = pd.DataFrame(np.random.randint(1,100, 40).reshape(10, -1))
+df = pd.DataFrame(np.random.randint(1, 100, 40).reshape(10, -1))
 # print(df.apply(lambda x: np.argmax(x)).value_counts().index[0])
 
 """
@@ -1033,8 +1040,8 @@ for i, row in df.iterrows():
     nearest_rows.append(max(e_dists, key=e_dists.get))
     nearest_distance.append(max(e_dists.values()))
 
-df['nearest_row'] = nearest_rows
-df['dist'] = nearest_distance
+df["nearest_row"] = nearest_rows
+df["dist"] = nearest_distance
 
 """
 61. How to know the maximum possible correlation value of each column against other columns?
@@ -1048,7 +1055,9 @@ Input
 df = pd.DataFrame(np.random.randint(1,100, 80).reshape(8, -1), columns=list('pqrstuvwxy'), index=list('abcdefgh'))
 
 """
-df = pd.DataFrame(np.random.randint(1,100, 80).reshape(8, -1), columns=list('pqrstuvwxy'), index=list('abcdefgh'))
+df = pd.DataFrame(
+    np.random.randint(1, 100, 80).reshape(8, -1), columns=list("pqrstuvwxy"), index=list("abcdefgh")
+)
 # print(df.corr().apply(lambda x: np.abs(x)).apply(lambda x: sorted(x)[-2], axis=1))
 
 
@@ -1058,8 +1067,8 @@ Difficulty Level: L2
 
 Compute the minimum-by-maximum for every row of df.
 """
-df = pd.DataFrame(np.random.randint(1,100, 80).reshape(8, -1))
-#print(df.apply(lambda x: np.min(x)/np.max(x), axis=1))
+df = pd.DataFrame(np.random.randint(1, 100, 80).reshape(8, -1))
+# print(df.apply(lambda x: np.min(x)/np.max(x), axis=1))
 
 
 """
@@ -1070,7 +1079,7 @@ Create a new column 'penultimate' which has the second largest value of each row
 
 Input
 """
-df = pd.DataFrame(np.random.randint(1,100, 80).reshape(8, -1))
+df = pd.DataFrame(np.random.randint(1, 100, 80).reshape(8, -1))
 df["penultimate"] = df.apply(lambda x: sorted(x)[-2], axis=1)
 # print(df)
 
@@ -1084,7 +1093,7 @@ Don’t use external packages like sklearn.
 
 Input
 """
-df = pd.DataFrame(np.random.randint(1,100, 80).reshape(8, -1))
+df = pd.DataFrame(np.random.randint(1, 100, 80).reshape(8, -1))
 mean = df.describe().loc["mean", :]
 std = df.describe().loc["std", :]
 # print((df - mean)/std)
@@ -1097,7 +1106,7 @@ Compute the correlation of each row of df with its succeeding row.
 
 Input
 """
-df = pd.DataFrame(np.random.randint(1,100, 80).reshape(8, -1))
+df = pd.DataFrame(np.random.randint(1, 100, 80).reshape(8, -1))
 # print([df.iloc[i].corr(df.iloc[i+1]) for i in range(len(df) - 1)])
 
 """
@@ -1135,8 +1144,8 @@ Desired output
 # 8  47   0  96  55  17  83  61  85   0  86
 # 9   0  80  28  45  77  12  67  80   7   0
 """
-df = pd.DataFrame(np.random.randint(1,100, 100).reshape(10, -1))
-for i in  range(len(df) - 1):
+df = pd.DataFrame(np.random.randint(1, 100, 100).reshape(10, -1))
+for i in range(len(df) - 1):
     df.iloc[i, i] = 0
 # print(df)
 
@@ -1155,11 +1164,15 @@ df = pd.DataFrame({'col1': ['apple', 'banana', 'orange'] * 3,
 
 df_grouped = df.groupby(['col1'])
 """
-df = pd.DataFrame({'col1': ['apple', 'banana', 'orange'] * 3,
-                   'col2': np.random.rand(9),
-                   'col3': np.random.randint(0, 15, 9)})
+df = pd.DataFrame(
+    {
+        "col1": ["apple", "banana", "orange"] * 3,
+        "col2": np.random.rand(9),
+        "col3": np.random.randint(0, 15, 9),
+    }
+)
 
-df_grouped = df.groupby(['col1'])
+df_grouped = df.groupby(["col1"])
 # print(df_grouped.get_group("apple"))
 
 """
@@ -1170,9 +1183,13 @@ In df, find the second largest value of 'taste' for 'banana'
 
 Input
 """
-df = pd.DataFrame({'fruit': ['apple', 'banana', 'orange'] * 3,
-                   'taste': np.random.rand(9),
-                   'price': np.random.randint(0, 15, 9)})
+df = pd.DataFrame(
+    {
+        "fruit": ["apple", "banana", "orange"] * 3,
+        "taste": np.random.rand(9),
+        "price": np.random.randint(0, 15, 9),
+    }
+)
 # print(df.groupby("fruit").agg({lambda x: sorted(x)[-2]}))
 
 
@@ -1184,9 +1201,13 @@ In df, Compute the mean price of every fruit, while keeping the fruit as another
 
 Input
 """
-df = pd.DataFrame({'fruit': ['apple', 'banana', 'orange'] * 3,
-                   'rating': np.random.rand(9),
-                   'price': np.random.randint(0, 15, 9)})
+df = pd.DataFrame(
+    {
+        "fruit": ["apple", "banana", "orange"] * 3,
+        "rating": np.random.rand(9),
+        "price": np.random.randint(0, 15, 9),
+    }
+)
 # print(df.groupby("fruit").mean().reset_index())
 
 
@@ -1199,14 +1220,29 @@ Join dataframes df1 and df2 by ‘fruit-pazham’ and ‘weight-kilo’.
 Input
 """
 
-df1 = pd.DataFrame({'fruit': ['apple', 'banana', 'orange'] * 3,
-                    'weight': ['high', 'medium', 'low'] * 3,
-                    'price': np.random.randint(0, 15, 9)})
+df1 = pd.DataFrame(
+    {
+        "fruit": ["apple", "banana", "orange"] * 3,
+        "weight": ["high", "medium", "low"] * 3,
+        "price": np.random.randint(0, 15, 9),
+    }
+)
 
-df2 = pd.DataFrame({'pazham': ['apple', 'orange', 'pine'] * 2,
-                    'kilo': ['high', 'low'] * 3,
-                    'price': np.random.randint(0, 15, 6)})
-df_join = pd.merge(df1, df2, how='inner', left_on=['fruit', 'weight'], right_on=['pazham', 'kilo'], suffixes=['_left', '_right'])
+df2 = pd.DataFrame(
+    {
+        "pazham": ["apple", "orange", "pine"] * 2,
+        "kilo": ["high", "low"] * 3,
+        "price": np.random.randint(0, 15, 6),
+    }
+)
+df_join = pd.merge(
+    df1,
+    df2,
+    how="inner",
+    left_on=["fruit", "weight"],
+    right_on=["pazham", "kilo"],
+    suffixes=["_left", "_right"],
+)
 # print(df_join)
 
 """
@@ -1242,11 +1278,11 @@ Desired Output
 4  30  47  67   4     1.0      NaN
 """
 # Input
-df = pd.DataFrame(np.random.randint(1, 100, 20).reshape(-1, 4), columns = list('abcd'))
+df = pd.DataFrame(np.random.randint(1, 100, 20).reshape(-1, 4), columns=list("abcd"))
 
 # Solution
-df['a_lag1'] = df['a'].shift(1)
-df['b_lead1'] = df['b'].shift(-1)
+df["a_lag1"] = df["a"].shift(1)
+df["b_lead1"] = df["b"].shift(-1)
 # print(df)
 
 
@@ -1258,7 +1294,7 @@ Get the frequency of unique values in the entire dataframe df.
 
 Input
 """
-df = pd.DataFrame(np.random.randint(1, 10, 20).reshape(-1, 4), columns = list('abcd'))
+df = pd.DataFrame(np.random.randint(1, 10, 20).reshape(-1, 4), columns=list("abcd"))
 
 # print(pd.value_counts(df.values.ravel()))
 
@@ -1291,10 +1327,15 @@ Desired Output
 3  40   Hyderabad    Telengana
 4  80   Bangalore    Karnataka
 """
-df = pd.DataFrame(["STD, City    State",
-"33, Kolkata    West Bengal",
-"44, Chennai    Tamil Nadu",
-"40, Hyderabad    Telengana",
-"80, Bangalore    Karnataka"], columns=['row'])
+df = pd.DataFrame(
+    [
+        "STD, City    State",
+        "33, Kolkata    West Bengal",
+        "44, Chennai    Tamil Nadu",
+        "40, Hyderabad    Telengana",
+        "80, Bangalore    Karnataka",
+    ],
+    columns=["row"],
+)
 
 print(df["row"].str.split("\s+|,", expand=True))
