@@ -412,7 +412,7 @@ iris_2d[np.random.randint(150, size=20), np.random.randint(4, size=20)] = np.nan
 """
 iris_2d = np.genfromtxt(url, delimiter=',', dtype='float')
 iris_2d[np.random.randint(150, size=20), np.random.randint(4, size=20)] = np.nan
-print(np.where(np.isnan(iris_2d)))
+# print(np.where(np.isnan(iris_2d)))
 
 """34. How to filter a numpy array based on two or more conditions?
 Difficulty Level: L3
@@ -423,7 +423,7 @@ url = 'https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data'
 iris_2d = np.genfromtxt(url, delimiter=',', dtype='float', usecols=[0,1,2,3])
 """
 condition = (iris_2d[:, 2] > 1.5) & (iris_2d[:, 0] < 5.0)
-print(iris_2d[condition])
+# print(iris_2d[condition])
 
 """35. How to drop rows that contain a missing value from a numpy array?
 Difficulty Level: L3:
@@ -432,7 +432,7 @@ Q. Select the rows of iris_2d that does not have any nan value.
 url = 'https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data'
 """
 iris_2d = np.genfromtxt(url, delimiter=',', dtype='float', usecols=[0,1,2,3])
-print(iris_2d[np.sum(np.isnan(iris_2d), axis = 1) == 0][:5])
+# print(iris_2d[np.sum(np.isnan(iris_2d), axis = 1) == 0][:5])
 
 
 """36. How to find the correlation between two columns of a numpy array?
@@ -444,17 +444,19 @@ Q. Find the correlation between SepalLength(1st column) and PetalLength(3rd colu
 url = 'https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data'
 iris_2d = np.genfromtxt(url, delimiter=',', dtype='float', usecols=[0,1,2,3])
 """
+sepallength = np.array([row[0] for row in iris_2d])
+petalLength = np.array([row[2] for row in iris_2d])
+# print(np.corrcoef(sepallength, petalLength))
 
 
 """37. How to find if a given array has any null values?
 Difficulty Level: L2
-
 Q. Find out if iris_2d has any missing values.
-
 # Input
 url = 'https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data'
 iris_2d = np.genfromtxt(url, delimiter=',', dtype='float', usecols=[0,1,2,3])
 """
+# print(np.isnan(iris_2d).any())
 
 
 """38. How to replace all missing values with 0 in a numpy array?
@@ -467,25 +469,26 @@ url = 'https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data'
 iris_2d = np.genfromtxt(url, delimiter=',', dtype='float', usecols=[0,1,2,3])
 iris_2d[np.random.randint(150, size=20), np.random.randint(4, size=20)] = np.nan
 """
-
+iris_2d[np.isnan(iris_2d)] = 0
 
 """39. How to find the count of unique values in a numpy array?
 Difficulty Level: L2
-
 Q. Find the unique values and the count of unique values in iris's species
-
 # Input
 url = 'https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data'
 iris = np.genfromtxt(url, delimiter=',', dtype='object')
 names = ('sepallength', 'sepalwidth', 'petallength', 'petalwidth', 'species')
 """
+iris = np.genfromtxt(url, delimiter=',', dtype='object')
+names = ('sepallength', 'sepalwidth', 'petallength', 'petalwidth', 'species')
+species = np.array([row[-1] for row in iris])
+# print(np.unique(species, return_counts=True))
 
 
 """40. How to convert a numeric to a categorical (text) array?
 Difficulty Level: L2
-
-Q. Bin the petal length (3rd) column of iris_2d to form a text array, such that if petal length is:
-
+Q. Bin the petal length (3rd) column of iris_2d to form a text array, 
+such that if petal length is:
 Less than 3 --> 'small'
 3-5 --> 'medium'
 '>=5 --> 'large'
@@ -494,18 +497,28 @@ url = 'https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data'
 iris = np.genfromtxt(url, delimiter=',', dtype='object')
 names = ('sepallength', 'sepalwidth', 'petallength', 'petalwidth', 'species')
 """
+petal_length_bin = np.digitize(iris[:, 2].astype('float'), [0, 3, 5, 10])
+# Map it to respective category
+label_map = {1: 'small', 2: 'medium', 3: 'large', 4: np.nan}
+petal_length_cat = [label_map[x] for x in petal_length_bin]
 
 
 """41. How to create a new column from existing columns of a numpy array?
 Difficulty Level: L2
 
-Q. Create a new column for volume in iris_2d, where volume is (pi x petallength x sepal_length^2)/3
+Q. Create a new column for volume in iris_2d, 
+where volume is (pi x petallength x sepal_length^2)/3
 
 # Input
 url = 'https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data'
 iris_2d = np.genfromtxt(url, delimiter=',', dtype='object')
 names = ('sepallength', 'sepalwidth', 'petallength', 'petalwidth', 'species')
 """
+sepallength = iris_2d[:, 0].astype('float')
+petallength = iris_2d[:, 2].astype('float')
+volume = (np.pi * petallength * (sepallength**2))/3
+
+# np.hstack([iris_2d, volume])
 
 
 """42. How to do probabilistic sampling in numpy?
@@ -517,6 +530,17 @@ Q. Randomly sample iris's species such that setose is twice the number of versic
 url = 'https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data'
 iris = np.genfromtxt(url, delimiter=',', dtype='object')
 """
+# Approach 1: Generate Probablistically
+np.random.seed(100)
+a = np.array(['Iris-setosa', 'Iris-versicolor', 'Iris-virginica'])
+species_out = np.random.choice(a, 150, p=[0.5, 0.25, 0.25])
+
+# Approach 2: Probablistic Sampling (preferred)
+np.random.seed(100)
+probs = np.r_[np.linspace(0, 0.500, num=50), np.linspace(0.501, .750, num=50), np.linspace(.751, 1.0, num=50)]
+index = np.searchsorted(probs, np.random.random(150))
+species_out = species[index]
+# print(np.unique(species_out, return_counts=True))
 
 
 """43. How to get the second largest value of an array when grouped by another array?
@@ -529,6 +553,8 @@ url = 'https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data'
 iris = np.genfromtxt(url, delimiter=',', dtype='object')
 names = ('sepallength', 'sepalwidth', 'petallength', 'petalwidth', 'species')
 """
+petal_len_setosa = iris[iris[:, 4] == 'Iris-setosa', [2]].astype('float')
+# print(np.unique(np.sort(petal_len_setosa))[-2])
 
 
 """44. How to sort a 2D array by a column
@@ -540,7 +566,7 @@ url = 'https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data'
 iris = np.genfromtxt(url, delimiter=',', dtype='object')
 names = ('sepallength', 'sepalwidth', 'petallength', 'petalwidth', 'species')
 """
-
+# print(np.sort(sepallength))
 
 """45. How to find the most frequent value in a numpy array?
 Difficulty Level: L1
@@ -553,12 +579,15 @@ url = 'https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data'
 iris = np.genfromtxt(url, delimiter=',', dtype='object')
 names = ('sepallength', 'sepalwidth', 'petallength', 'petalwidth', 'species')
 """
+vals, counts = np.unique(iris[:, 2], return_counts=True)
+# print(vals[np.argmax(counts)])
 
 
 """46. How to find the position of the first occurrence of a value greater than a given value?
 Difficulty Level: L2
 
-Q. Find the position of the first occurrence of a value greater than 1.0 in petalwidth 4th column of iris dataset.
+Q. Find the position of the first occurrence of a value greater 
+than 1.0 in petalwidth 4th column of iris dataset.
 
 # Input:
 url = 'https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data'
