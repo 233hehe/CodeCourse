@@ -259,15 +259,12 @@ Q. Print or show only 3 decimal places of the numpy array rand_arr.
 Input:
 rand_arr = np.random.random((5,3))
 """
-
+# np.set_printoptions(percision=3)
 
 """22. How to pretty print a numpy array by suppressing the scientific notation (like 1e10)?
 Difficulty Level: L1
-
 Q. Pretty print rand_arr by suppressing the scientific notation (like 1e10)
-
 Input:
-
 # Create the random array
 np.random.seed(100)
 rand_arr = np.random.random([3,3])/1e3
@@ -282,71 +279,67 @@ Desired Output:
 #>        [ 0.000845,  0.000005,  0.000122],
 #>        [ 0.000671,  0.000826,  0.000137]])
 """
+# np.set_printoptions(suppress=True)
 
 
 """23. How to limit the number of items printed in output of numpy array?
 Difficulty Level: L1
-
 Q. Limit the number of items printed in python numpy array a to a maximum of 6 elements.
-
 Input:
-
 a = np.arange(15)
 #> array([ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14])
 Desired Output:
-
 #> array([ 0,  1,  2, ..., 12, 13, 14])
 """
+# np.set_printoptions(threshold=6)
 
 
 """24. How to print the full numpy array without truncating
 Difficulty Level: L1
-
 Q. Print the full numpy array a without truncating.
-
 Input:
-
 np.set_printoptions(threshold=6)
 a = np.arange(15)
 a
 #> array([ 0,  1,  2, ..., 12, 13, 14])
 Desired Output:
-
 a
 #> array([ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14])
 """
+# np.set_printoptions(threshold=np.nan)
 
 
 """25. How to import a dataset with numbers and texts keeping the text intact in python numpy?
 Difficulty Level: L2
-
 Q. Import the iris dataset keeping the text intact.
-
 """
+url = 'https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data'
+iris = np.genfromtxt(url, delimiter=',', dtype='object')
+names = ('sepallength', 'sepalwidth', 'petallength', 'petalwidth', 'species')
 
 
 """26. How to extract a particular column from 1D array of tuples?
 Difficulty Level: L2
-
 Q. Extract the text column species from the 1D iris imported in previous question.
-
 Input:
-
 url = 'https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data'
 iris_1d = np.genfromtxt(url, delimiter=',', dtype=None)
 """
+iris_1d = np.genfromtxt(url, delimiter=',', dtype=None, encoding='bytes')
+species = np.array([row[4] for row in iris_1d])
+# print(species)
 
 
 """27. How to convert a 1d array of tuples to a 2d numpy array?
 Difficulty Level: L2
-
 Q. Convert the 1D iris to 2D array iris_2d by omitting the species text field.
-
 Input:
-
 url = 'https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data'
 iris_1d = np.genfromtxt(url, delimiter=',', dtype=None)
 """
+rest = np.array([row.tolist()[:4] for row in iris_1d])
+# print(rest)
+
 
 
 """28. How to compute the mean, median, standard deviation of a numpy array?
@@ -357,29 +350,29 @@ Q. Find the mean, median, standard deviation of iris's sepallength (1st column)
 url = 'https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data'
 iris = np.genfromtxt(url, delimiter=',', dtype='object')
 """
+sepallength = np.array([row[0] for row in iris_1d])
+# print(np.mean(sepallength), np.median(sepallength), np.std(sepallength))
 
 
 """29. How to normalize an array so the values range exactly between 0 and 1?
 Difficulty: L2
-
-Q. Create a normalized form of iris's sepallength whose values range exactly between 0 and 1 so that the minimum has value 0 and maximum has value 1.
-
+Q. Create a normalized form of iris's sepallength whose values range exactly 
+between 0 and 1 so that the minimum has value 0 and maximum has value 1.
 Input:
 
 url = 'https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data'
 sepallength = np.genfromtxt(url, delimiter=',', dtype='float', usecols=[0])
 """
+# print((sepallength - np.mean(sepallength))/np.std(sepallength))
 
 
 """30. How to compute the softmax score?
 Difficulty Level: L3
-
 Q. Compute the softmax score of sepallength.
-
 url = 'https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data'
 sepallength = np.genfromtxt(url, delimiter=',', dtype='float', usecols=[0])
 """
-
+# print(np.exp(sepallength)/np.sum(np.exp(sepallength)))
 
 """31. How to find the percentile scores of a numpy array?
 Difficulty Level: L1
@@ -389,6 +382,7 @@ Q. Find the 5th and 95th percentile of iris's sepallength
 url = 'https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data'
 sepallength = np.genfromtxt(url, delimiter=',', dtype='float', usecols=[0])
 """
+# print(np.percentile(sepallength, q=[5, 95]))
 
 
 """32. How to insert values at random positions in an array?
@@ -398,8 +392,12 @@ Q. Insert np.nan values at 20 random positions in iris_2d dataset
 
 # Input
 url = 'https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data'
-iris_2d = np.genfromtxt(url, delimiter=',', dtype='object')
 """
+iris_2d = np.genfromtxt(url, delimiter=',', dtype='object')
+np.random.seed(100)
+# print(
+# iris_2d[np.random.randint(150, size=20), np.random.randint(4, size=20)] = np.nan
+# )
 
 
 """33. How to find the position of missing values in numpy array?
@@ -412,28 +410,29 @@ url = 'https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data'
 iris_2d = np.genfromtxt(url, delimiter=',', dtype='float')
 iris_2d[np.random.randint(150, size=20), np.random.randint(4, size=20)] = np.nan
 """
-
+iris_2d = np.genfromtxt(url, delimiter=',', dtype='float')
+iris_2d[np.random.randint(150, size=20), np.random.randint(4, size=20)] = np.nan
+print(np.where(np.isnan(iris_2d)))
 
 """34. How to filter a numpy array based on two or more conditions?
 Difficulty Level: L3
-
 Q. Filter the rows of iris_2d that has petallength (3rd column) > 1.5 and sepallength (1st column) < 5.0
 
 # Input
 url = 'https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data'
 iris_2d = np.genfromtxt(url, delimiter=',', dtype='float', usecols=[0,1,2,3])
 """
-
+condition = (iris_2d[:, 2] > 1.5) & (iris_2d[:, 0] < 5.0)
+print(iris_2d[condition])
 
 """35. How to drop rows that contain a missing value from a numpy array?
 Difficulty Level: L3:
-
 Q. Select the rows of iris_2d that does not have any nan value.
-
 # Input
 url = 'https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data'
-iris_2d = np.genfromtxt(url, delimiter=',', dtype='float', usecols=[0,1,2,3])
 """
+iris_2d = np.genfromtxt(url, delimiter=',', dtype='float', usecols=[0,1,2,3])
+print(iris_2d[np.sum(np.isnan(iris_2d), axis = 1) == 0][:5])
 
 
 """36. How to find the correlation between two columns of a numpy array?
