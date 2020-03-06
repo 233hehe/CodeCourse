@@ -585,45 +585,37 @@ vals, counts = np.unique(iris[:, 2], return_counts=True)
 
 """46. How to find the position of the first occurrence of a value greater than a given value?
 Difficulty Level: L2
-
 Q. Find the position of the first occurrence of a value greater 
 than 1.0 in petalwidth 4th column of iris dataset.
-
 # Input:
 url = 'https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data'
 iris = np.genfromtxt(url, delimiter=',', dtype='object')
 """
-
+# print(np.argwhere(iris[:, 3].astype(float)>1.0)[0])
 
 """47. How to replace all values greater than a given value to a given cutoff?
 Difficulty Level: L2
-
 Q. From the array a, replace all values greater than 30 to 30 and less than 10 to 10.
-
 Input:
-
+"""
 np.random.seed(100)
 a = np.random.uniform(1,50, 20)
-"""
-
+# print(np.clip(a, a_min=10, a_max=30))
 
 """48. How to get the positions of top n values from a numpy array?
 Difficulty Level: L2
-
 Q. Get the positions of top 5 maximum values in a given array a.
-
 np.random.seed(100)
 a = np.random.uniform(1,50, 20)
 """
-
+a = np.random.uniform(1,50, 20)
+# print(a[a.argsort()][-5:])
+# print(np.partition(a, kth=-5)[-5:])
 
 """49. How to compute the row wise counts of all possible values in an array?
 Difficulty Level: L4
-
 Q. Compute the counts of unique values row-wise.
-
 Input:
-
 np.random.seed(100)
 arr = np.random.randint(1,11,size=(6, 10))
 arr
@@ -641,11 +633,14 @@ Desired Output:
 >  [1, 0, 2, 1, 0, 1, 0, 2, 1, 2],
 >  [2, 2, 2, 0, 0, 1, 1, 1, 1, 0],
 >  [1, 1, 1, 1, 1, 2, 0, 0, 2, 1]]
-Output contains 10 columns representing numbers from 1 to 10. The values are the counts of the numbers in the respective rows.
-For example, Cell(0,2) has the value 2, which means, the number 3 occurs exactly 2 times in the 1st row.
-
+Output contains 10 columns representing numbers from 1 to 10. T
+he values are the counts of the numbers in the respective rows.
+For example, Cell(0,2) has the value 2, which means, 
+the number 3 occurs exactly 2 times in the 1st row.
 """
-
+arr = np.random.randint(1,11,size=(6, 10))
+num_counts_array = [np.unique(row, return_counts=True) for row in arr]
+([[int(b[a==i]) if i in a else 0 for i in np.unique(arr)] for a, b in num_counts_array])
 
 """50. How to convert an array of arrays into a flat 1d array?
 Difficulty Level: 2
@@ -666,13 +661,17 @@ Desired Output:
 
 #> array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
 """
+arr1 = np.arange(3)
+arr2 = np.arange(3,7)
+arr3 = np.arange(7,10)
+
+array_of_arrays = np.array([arr1, arr2, arr3])
+# print(np.hstack(array_of_arrays))
 
 
 """51. How to generate one-hot encodings for an array in numpy?
 Difficulty Level L4
-
 Q. Compute the one-hot encodings (dummy binary variables for each unique value in the array)
-
 Input:
 
 np.random.seed(101) 
@@ -688,12 +687,17 @@ Output:
 #>        [ 0.,  1.,  0.],
 #>        [ 1.,  0.,  0.]])
 """
+arr = np.random.randint(1,4, size=6)
+unique_value = np.unique(arr)
+arr2d = arr.reshape(-1, 1)
+# print((arr2d==unique_value).view(np.int8))
 
 
 """52. How to create row numbers grouped by a categorical variable?
 Difficulty Level: L3
 
-Q. Create row numbers grouped by a categorical variable. Use the following sample from iris species as input.
+Q. Create row numbers grouped by a categorical variable. 
+Use the following sample from iris species as input.
 
 Input:
 
@@ -712,12 +716,18 @@ Desired Output:
 
 #> [0, 1, 2, 3, 4, 5, 0, 1, 2, 3, 4, 5, 0, 1, 2, 3, 4, 5, 6, 7]
 """
+url = 'https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data'
+species = np.genfromtxt(url, delimiter=',', dtype='str', usecols=4)
+species_small = np.sort(np.random.choice(species, size=20))
+[i for val in np.unique(species_small) 
+   for i, grp in enumerate(species_small[species_small==val])]
 
 
 """53. How to create groud ids based on a given categorical variable?
 Difficulty Level: L4
 
-Q. Create group ids based on a given categorical variable. Use the following sample from iris species as input.
+Q. Create group ids based on a given categorical variable. 
+Use the following sample from iris species as input.
 
 Input:
 
@@ -736,23 +746,28 @@ Desired Output:
 
 #> [0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2]
 """
+ohe_label = np.unique(species_small)
+map_dict = dict(zip(ohe_label, np.array(range(len(ohe_label)))))
+# print(np.vectorize(map_dict.get)(species_small))
 
 
 """54. How to rank items in an array using numpy?
 Difficulty Level: L2
-
 Q. Create the ranks for the given numeric array a.
-
 Input:
-
 np.random.seed(10)
 a = np.random.randint(20, size=10)
 print(a)
 #> [ 9  4 15  0 17 16 17  8  9  0]
 Desired output:
-
 [4 2 6 0 8 7 9 3 5 1]
 """
+np.random.seed(10)
+a = np.random.randint(20, size=10)
+# print(a)
+# print(np.argsort(a))
+# print(np.argsort(a).argsort())
+
 
 
 """55. How to rank items in a multidimensional array using numpy?
@@ -772,13 +787,14 @@ Desired output:
 #> [[4 2 6 0 8]
 #>  [7 9 3 5 1]]
 """
+np.random.seed(10)
+a = np.random.randint(20, size=[2,5])
+# print(a.ravel().argsort().argsort().reshape(a.shape))
 
 
 """56. How to find the maximum value in each row of a numpy array 2d?
 DifficultyLevel: L2
-
 Q. Compute the maximum for each row in the given array.
-
 np.random.seed(100)
 a = np.random.randint(1,10, [5,3])
 a
@@ -788,6 +804,9 @@ a
 #>        [3, 3, 3],
 #>        [2, 1, 9]])
 """
+np.random.seed(100)
+a = np.random.randint(1,10, [5,3])
+# print(np.amax(a, axis=1))
 
 
 """57. How to compute the min-by-max for each row for a numpy array 2d?
@@ -804,6 +823,7 @@ a
 #>        [3, 3, 3],
 #>        [2, 1, 9]])
 """
+# print(np.apply_along_axis(lambda x: np.min(x)/np.max(x), arr=a, axis=1))
 
 
 """58. How to find the duplicate records in a numpy array?
@@ -820,6 +840,12 @@ Desired Output:
 
 #> [False  True False  True False False  True  True  True  True]
 """
+np.random.seed(100)
+a = np.random.randint(0, 5, 10)
+uniques, uniq_idx, counts = np.unique(a,return_index=True,return_counts=True)
+out = np.full(a.shape[0], True)
+out[uniq_idx] = False
+# print(out)
 
 
 """59. How to find the grouped mean in numpy?
@@ -838,31 +864,46 @@ Desired Solution:
 #>  [b'Iris-versicolor', 2.770],
 #>  [b'Iris-virginica', 2.974]]
 """
+speallwidth = iris[:, 1].astype('float')  # sepalwidth
+species = iris[:, 4]  # species
+species_unique = np.unique(species)
+# print([(i ,(speallwidth[species==i]).mean()) for i in species_unique])
 
 
 """60. How to convert a PIL image to numpy array?
 Difficulty Level: L3
-
 Q. Import the image from the following URL and convert it to a numpy array.
-
 URL = 'https://upload.wikimedia.org/wikipedia/commons/8/8b/Denali_Mt_McKinley.jpg'
-
 """
+from io import BytesIO
+from PIL import Image
+import PIL, requests
+URL = 'https://upload.wikimedia.org/wikipedia/commons/8/8b/Denali_Mt_McKinley.jpg'
+response = requests.get(URL)
+# Read it as Image
+# I = Image.open(BytesIO(response.content))
+# Optionally resize
+# I = I.resize([150,150])
+
+# Convert to numpy array
+# arr = np.asarray(I)
+# im = PIL.Image.fromarray(np.uint8(arr))
+# Image.Image.show(im)
+
 
 
 """61. How to drop all missing values from a numpy array?
 Difficulty Level: L2
 
 Q. Drop all nan values from a 1D numpy array
-
 Input:
-
 np.array([1,2,3,np.nan,5,6,7,np.nan])
-
 Desired Output:
-
 array([ 1.,  2.,  3.,  5.,  6.,  7.])
 """
+a = np.array([1,2,3,np.nan,5,6,7,np.nan])
+# print(a[~np.isnan(a)])
+
 
 
 """62. How to compute the euclidean distance between two arrays?
@@ -871,42 +912,42 @@ Difficulty Level: L3
 Q. Compute the euclidean distance between two arrays a and b.
 
 Input:
-
+"""
 a = np.array([1,2,3,4,5])
 b = np.array([4,5,6,7,8])
-"""
+# print(np.linalg.norm(a-b))
 
 
 """63. How to find all the local maxima (or peaks) in a 1d array?
 Difficulty Level: L4
-
-Q. Find all the peaks in a 1D numpy array a. Peaks are points surrounded by smaller values on both sides.
-
+Q. Find all the peaks in a 1D numpy array a. 
+Peaks are points surrounded by smaller values on both sides.
 Input:
-
 a = np.array([1, 3, 7, 1, 2, 6, 0, 1])
-
 Desired Output:
-
 #> array([2, 5])
 where, 2 and 5 are the positions of peak values 7 and 6.
-
 """
+doublediff = np.diff(np.sign(np.diff(a)))
+peak_locations = np.where(doublediff == -2)[0] + 1
+# print(peak_locations)
 
 
-"""64. How to subtract a 1d array from a 2d array, where each item of 1d array subtracts from respective row?
+"""64. How to subtract a 1d array from a 2d array, 
+where each item of 1d array subtracts from respective row?
 Difficulty Level: L2
 
-Q. Subtract the 1d array b_1d from the 2d array a_2d, such that each item of b_1d subtracts from respective row of a_2d.
-
-a_2d = np.array([[3,3,3],[4,4,4],[5,5,5]])
-b_1d = np.array([1,1,1]
+Q. Subtract the 1d array b_1d from the 2d array a_2d, 
+such that each item of b_1d subtracts from respective row of a_2d.
 Desired Output:
 
 #> [[2 2 2]
 #>  [2 2 2]
 #>  [2 2 2]]
 """
+a_2d = np.array([[3,3,3],[4,4,4],[5,5,5]])
+b_1d = np.array([1,2,3])
+# print(a_2d - b_1d.reshape(-1, 1))
 
 
 """65. How to find the index of n'th repetition of an item in an array
@@ -916,6 +957,8 @@ Q. Find the index of 5th repetition of number 1 in x.
 
 x = np.array([1, 2, 1, 1, 3, 4, 3, 1, 1, 2, 1, 1, 2])
 """
+x = np.array([1, 2, 1, 1, 3, 4, 3, 1, 1, 2, 1, 1, 2])
+# print(np.where(x == 1)[0][4])
 
 
 """66. How to convert numpy's datetime64 object to datetime's datetime object?
@@ -924,27 +967,32 @@ Difficulty Level: L2
 Q. Convert numpy's datetime64 object to datetime's datetime object
 
 # Input: a numpy datetime64 object
-dt6
+"""
+dt64 = np.datetime64('2018-02-25 22:10:10')
+from datetime import datetime
+# print(dt64.tolist())
 
-4 = np.datetime64('2018-02-25 22:10:10')"""
 """67. How to compute the moving average of a numpy array?
 Difficulty Level: L3
-
-Q. Compute the moving average of window size 3, for the given 1D array.
-
+Q. Compute the moving average of window size 3, 
+for the given 1D array.
 Input:
-
+"""
 np.random.seed(100)
 Z = np.random.randint(10, size=10)
-"""
+def moving_average(arr, n):
+    return [ (arr[:i+1][::-1][:n]).mean() 
+    for i, ele in enumerate(arr) ]
+n = 5
+# print(moving_average(Z, n))
 
 
 """68. How to create a numpy array sequence given only the starting point, length and the step?
 Difficulty Level: L2
-
-Q. Create a numpy array of length 10, starting from 5 and has a step of 3 between consecutive numbers
-
+Q. Create a numpy array of length 10, 
+starting from 5 and has a step of 3 between consecutive numbers
 """
+# print(np.arange(5, 5+3*10, 3))
 
 
 """69. How to fill in missing dates in an irregular series of numpy dates?
@@ -961,6 +1009,9 @@ print(dates)
 #>  '2018-02-11' '2018-02-13' '2018-02-15' '2018-02-17' '2018-02-19'
 #>  '2018-02-21' '2018-02-23']
 """
+filled_in = np.array([np.arange(date, (date+d)) 
+for date, d in zip(dates, np.diff(dates))]).reshape(-1)
+
 
 
 """70. How to create strides from a given 1D array?
@@ -982,3 +1033,8 @@ Desired Output:
 #>  [ 8  9 10 11]
 #>  [10 11 12 13]]
 """
+def gen_strides(a, stride_len=5, window_len=5):
+    n_strides = ((a.size-window_len)//stride_len) + 1
+    # return np.array([a[s:(s+window_len)] for s in np.arange(0, a.size, stride_len)[:n_strides]])
+    return np.array([a[s:(s+window_len)] for s in np.arange(0, n_strides*stride_len, stride_len)])
+
