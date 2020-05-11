@@ -1,10 +1,10 @@
-#from pyspark import SparkConf, SparkContext
+# from pyspark import SparkConf, SparkContext
 from pyspark.sql import SparkSession
 
 
 def main():
-    #conf = SparkConf().setMaster("local").setAppName("PopularMovies")
-    #sc = SparkContext(conf = conf)
+    # conf = SparkConf().setMaster("local").setAppName("PopularMovies")
+    # sc = SparkContext(conf = conf)
     sc = SparkSession.builder.master("local").appName("popularmovies").getOrCreate().sparkContext
 
     lines = sc.textFile("file:///home/williamzy11/codebase/SparkCourse/ml-100k/u.data")
@@ -20,5 +20,5 @@ def main():
         print(result)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

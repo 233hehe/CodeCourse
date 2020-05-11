@@ -3,7 +3,7 @@ from pyspark.sql import SparkSession
 
 
 def normalizeWords(text):
-    return re.compile(r'\W+', re.UNICODE).split(text.lower())
+    return re.compile(r"\W+", re.UNICODE).split(text.lower())
 
 
 def main():
@@ -19,5 +19,5 @@ def main():
             print(f"{cleanWord.decode()}, {count}")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

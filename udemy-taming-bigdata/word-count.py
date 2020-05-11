@@ -9,10 +9,10 @@ def main():
     wordcounts = words.countByValue()
 
     for word, count in wordcounts.items():
-        cleanWord = word.encode('ascii', 'ignore')
+        cleanWord = word.encode("ascii", "ignore")
         if cleanWord:
             print(cleanWord.decode() + " " + str(count))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
